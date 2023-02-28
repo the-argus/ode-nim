@@ -9,62 +9,97 @@ else:
     odedll* = "libode.so"
 
 
-type
-  duint64* = uint64_t
-  dint32* = int32_t
-  duint32* = uint32_t
-  dint16* = int16_t
-  duint16* = uint16_t
-  dint8* = int8_t
-  duint8* = uint8_t
-  dintptr* = intptr_t
-  duintptr* = uintptr_t
-  ddiffint* = ptrdiff_t
-  dsizeint* = csize_t
+when defined(ODE_DLL) or defined(ODE_LIB):
+  discard
 
-const
-  X86_64_SYSTEM* = 1
+when defined(_MSC_VER) or (defined(__GNUC__) and defined(_WIN32)):
+  when defined(ODE_DLL):
+    discard
+  else:
+    const
+      __declspec* = (dllexport)
+when defined(_MSC_VER):
+  discard
+elif defined(__GNUC__) and
+    ((__GNUC__ > 3) or ((__GNUC__ == 3) and (__GNUC_MINOR__ >= 1))):
+  const
+    __declspec* = cast[deprecated](__attribute__((__deprecated__)))
+else:
+  const
+    __declspec* = (deprecated)
+when defined(__GNUC__):
+  discard
+elif defined(_MSC_VER):
+  discard
+else:
+  const
+    __declspec* = (noreturn)
 
-
-type
-  duint64* = cu__int64
-
-
-type
-  duint64* = culong
-
-
-
-type
-  dint32* = cint
-  duint32* = cuint
-  dint16* = cshort
-  duint16* = cushort
-  dint8* = cchar
-  duint8* = cuchar
-  dintptr* = dint64
-  duintptr* = duint64
-  ddiffint* = dint64
-  dsizeint* = duint64
-
-
-type
-  duint64* = cu__int64
-
-
-
-type
-  dint32* = cint
-  duint32* = cuint
-  dint16* = cshort
-  duint16* = cushort
-  dint8* = cchar
-  duint8* = cuchar
-  dintptr* = dint32
-  duintptr* = duint32
-  ddiffint* = dint32
-  dsizeint* = duint32
-
+when defined(__aarch64__) or defined(__alpha__) or defined(__ppc64__) or
+    defined(__s390__) or defined(__s390x__) or defined(__zarch__) or
+    defined(__mips__) or defined(__powerpc64__) or defined(__riscv) or
+    defined(__loongarch64) or (defined(__sparc__) and defined(__arch64__)):
+  type
+    dint64* = int64_t
+    duint64* = uint64_t
+    dint32* = int32_t
+    duint32* = uint32_t
+    dint16* = int16_t
+    duint16* = uint16_t
+    dint8* = int8_t
+    duint8* = uint8_t
+    dintptr* = intptr_t
+    duintptr* = uintptr_t
+    ddiffint* = ptrdiff_t
+    dsizeint* = csize_t
+elif (defined(_M_IA64) or defined(__ia64__) or defined(_M_AMD64) or
+    defined(__x86_64__)) and not defined(__ILP32__) and not defined(_ILP32):
+  const
+    X86_64_SYSTEM* = 1
+  when defined(_MSC_VER):
+    type
+      dint64* = __int64
+      duint64* = cu__int64
+  else:
+    when defined(_LP64) or defined(__LP64__):
+      type
+        dint64* = clong
+        duint64* = culong
+    else:
+      type
+        dint64* = clonglong
+        duint64* = culong
+  type
+    dint32* = cint
+    duint32* = cuint
+    dint16* = cshort
+    duint16* = cushort
+    dint8* = cchar
+    duint8* = cuchar
+    dintptr* = dint64
+    duintptr* = duint64
+    ddiffint* = dint64
+    dsizeint* = duint64
+else:
+  when defined(_MSC_VER):
+    type
+      dint64* = __int64
+      duint64* = cu__int64
+  else:
+    type
+      dint64* = clonglong
+      duint64* = culong
+  type
+    dint32* = cint
+    duint32* = cuint
+    dint16* = cshort
+    duint16* = cushort
+    dint8* = cchar
+    duint8* = cuchar
+    dintptr* = dint32
+    duintptr* = duint32
+    ddiffint* = dint32
+    dsizeint* = duint32
 
 when defined(INFINITY):
   when defined(dSINGLE):
@@ -92,29 +127,55 @@ else:
     const
       dInfinity* = (1.0 div 0.0)
 
-
-const
-  dNaN* = (_dNaNUnion().m_f)
-
-when defined(dSINGLE):
+when defined(NAN):
   const
-    dNaN* = ((float)(dInfinity - dInfinity))
+    dNaN* = NAN
+elif defined(__GNUC__):
+  discard
+elif defined(__cplusplus):
+  type
+    _dNaNUnion* {.bycopy, union.} = object
+      m_ui*: duint32
+      m_f*: cfloat
+
+  const
+    dNaN* = (_dNaNUnion().m_f)
 else:
-  const
-    dNaN* = (dInfinity - dInfinity)
+  when defined(dSINGLE):
+    const
+      dNaN* = ((float)(dInfinity - dInfinity))
+  else:
+    const
+      dNaN* = (dInfinity - dInfinity)
 
+when defined(_MSC_VER):
+  template _ode_copysignf*(x, y: untyped): untyped =
+    (cast[cfloat](_copysign(x, y)))
 
-template _ode_copysignf*(x, y: untyped): untyped =
-  copysignf(x, y)
+  template _ode_copysign*(x, y: untyped): untyped =
+    _copysign(x, y)
 
-template _ode_copysign*(x, y: untyped): untyped =
-  copysign(x, y)
+  template _ode_nextafterf*(x, y: untyped): untyped =
+    _nextafterf(x, y)
 
-template _ode_nextafterf*(x, y: untyped): untyped =
-  nextafterf(x, y)
+  template _ode_nextafter*(x, y: untyped): untyped =
+    _nextafter(x, y)
 
-template _ode_nextafter*(x, y: untyped): untyped =
-  nextafter(x, y)
+  when not defined(_WIN64) and defined(dSINGLE):
+    proc _nextafterf*(x: cfloat; y: cfloat): cfloat {.cdecl, importc: "_nextafterf",
+        dynlib: odedll.}
+else:
+  template _ode_copysignf*(x, y: untyped): untyped =
+    copysignf(x, y)
+
+  template _ode_copysign*(x, y: untyped): untyped =
+    copysign(x, y)
+
+  template _ode_nextafterf*(x, y: untyped): untyped =
+    nextafterf(x, y)
+
+  template _ode_nextafter*(x, y: untyped): untyped =
+    nextafter(x, y)
 
 when defined(_MSC_VER) and _MSC_VER < 1700:
   proc _ode_fmin*(x: cdouble; y: cdouble): cdouble {.inline, cdecl.} =
@@ -144,142 +205,13 @@ else:
 
 
 
-template dOP*(a, op, b, c: untyped): void =
-  while true:
-    if not 0:
-      break
+template dQtoR*(q, R: untyped): untyped =
+  dRfromQ((R), (q))
 
-template dOPC*(a, op, b, c: untyped): void =
-  while true:
-    if not 0:
-      break
+template dRtoQ*(R, q: untyped): untyped =
+  dQfromR((q), (R))
 
-template dOPE*(a, op, b: untyped): void =
-  while true:
-    if not 0:
-      break
-
-template dOPEC*(a, op, c: untyped): void =
-  while true:
-    if not 0:
-      break
-
-
-template dOPE2*(a, op1, b, op2, c: untyped): void =
-  while true:
-    if not 0:
-      break
-
-template dLENGTHSQUARED*(a: untyped): untyped =
-  dCalcVectorLengthSquare3(a)
-
-template dLENGTH*(a: untyped): untyped =
-  dCalcVectorLength3(a)
-
-template dDISTANCE*(a, b: untyped): untyped =
-  dCalcPointsDistance3(a, b)
-
-template dDOT*(a, b: untyped): untyped =
-  dCalcVectorDot3(a, b)
-
-template dDOT13*(a, b: untyped): untyped =
-  dCalcVectorDot3_13(a, b)
-
-template dDOT31*(a, b: untyped): untyped =
-  dCalcVectorDot3_31(a, b)
-
-template dDOT33*(a, b: untyped): untyped =
-  dCalcVectorDot3_33(a, b)
-
-template dDOT14*(a, b: untyped): untyped =
-  dCalcVectorDot3_14(a, b)
-
-template dDOT41*(a, b: untyped): untyped =
-  dCalcVectorDot3_41(a, b)
-
-template dDOT44*(a, b: untyped): untyped =
-  dCalcVectorDot3_44(a, b)
-
-
-template dCROSS*(a, op, b, c: untyped): void =
-  while true:
-    if not 0:
-      break
-
-template dCROSSpqr*(a, op, b, c, p, q, r: untyped): void =
-  while true:
-    if not 0:
-      break
-
-template dCROSS114*(a, op, b, c: untyped): untyped =
-  dCROSSpqr(a, op, b, c, 1, 1, 4)
-
-template dCROSS141*(a, op, b, c: untyped): untyped =
-  dCROSSpqr(a, op, b, c, 1, 4, 1)
-
-template dCROSS144*(a, op, b, c: untyped): untyped =
-  dCROSSpqr(a, op, b, c, 1, 4, 4)
-
-template dCROSS411*(a, op, b, c: untyped): untyped =
-  dCROSSpqr(a, op, b, c, 4, 1, 1)
-
-template dCROSS414*(a, op, b, c: untyped): untyped =
-  dCROSSpqr(a, op, b, c, 4, 1, 4)
-
-template dCROSS441*(a, op, b, c: untyped): untyped =
-  dCROSSpqr(a, op, b, c, 4, 4, 1)
-
-template dCROSS444*(a, op, b, c: untyped): untyped =
-  dCROSSpqr(a, op, b, c, 4, 4, 4)
-
-
-template dCROSSMAT*(A, a, skip, plus, minus: untyped): void =
-  while true:
-    (A)[1] = minus(a)[2]
-    (A)[2] = plus(a)[1]
-    (A)[(skip) + 0] = plus(a)[2]
-    (A)[(skip) + 2] = minus(a)[0]
-    (A)[2 * (skip) + 0] = minus(a)[1]
-    (A)[2 * (skip) + 1] = plus(a)[0]
-    if not 0:
-      break
-
-
-template dMULTIPLY0_331*(A, B, C: untyped): untyped =
-  dMultiply0_331(A, B, C)
-
-template dMULTIPLY1_331*(A, B, C: untyped): untyped =
-  dMultiply1_331(A, B, C)
-
-template dMULTIPLY0_133*(A, B, C: untyped): untyped =
-  dMultiply0_133(A, B, C)
-
-template dMULTIPLY0_333*(A, B, C: untyped): untyped =
-  dMultiply0_333(A, B, C)
-
-template dMULTIPLY1_333*(A, B, C: untyped): untyped =
-  dMultiply1_333(A, B, C)
-
-template dMULTIPLY2_333*(A, B, C: untyped): untyped =
-  dMultiply2_333(A, B, C)
-
-template dMULTIPLYADD0_331*(A, B, C: untyped): untyped =
-  dMultiplyAdd0_331(A, B, C)
-
-template dMULTIPLYADD1_331*(A, B, C: untyped): untyped =
-  dMultiplyAdd1_331(A, B, C)
-
-template dMULTIPLYADD0_133*(A, B, C: untyped): untyped =
-  dMultiplyAdd0_133(A, B, C)
-
-template dMULTIPLYADD0_333*(A, B, C: untyped): untyped =
-  dMultiplyAdd0_333(A, B, C)
-
-template dMULTIPLYADD1_333*(A, B, C: untyped): untyped =
-  dMultiplyAdd1_333(A, B, C)
-
-template dMULTIPLYADD2_333*(A, B, C: untyped): untyped =
-  dMultiplyAdd2_333(A, B, C)
-
+template dWtoDQ*(w, q, dq: untyped): untyped =
+  dDQfromW((dq), (w), (q))
 
 
