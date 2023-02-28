@@ -20,7 +20,7 @@
   in {
     packages = genSystems (system: {
       default = self.packages.${system}.ode;
-      header = pkgs.${system}.callPackage ./genheader.nix {};
+      header = pkgs.${system}.callPackage ./header.nix {};
       ode = pkgs.${system}.callPackage ./bindings.nix {
         inherit (self.packages.${system}) header;
       };
@@ -29,7 +29,7 @@
     devShell = genSystems (system:
       pkgs.${system}.mkShell {
         packages = with pkgs.${system}; [
-          python310Minimal
+          python3Minimal
           nim
           nimPackages.c2nim
           ode

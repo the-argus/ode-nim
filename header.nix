@@ -1,91 +1,25 @@
 { stdenvNoCC
 , fetchgit
+, coreutils-full
+, python3Minimal
 , ...
 }:
 let
-  types = [
-    "dReal"
-    "dColliderFn"
-    "dGeomID"
-    "dGeomClass"
+  create_header = stdenvNoCC.mkDerivation {
+    name = "create_header";
 
-    "dVector3"
-    "dMatrix3"
-    "dHeightfieldDataID"
-    "dSpaceID"
-    "dVector4"
-    "dNearCallback"
-    "dContactGeom"
-    "dQuaternion"
-    
-    # error stuff
-    "dMessage"
-    "dError"
-    "dDebug"
-    "dMessageFunction"
+    src = ./create_header.py;
 
-    "dBodyID"
-    "dJointID"
-    "dJointFeedback"
-    "dJointType"
-    "dJointGroupID"
-    "dContact"
-    "dMass"
-    "dWorldID"
-    "dWorldQuickStepIterationCount_DynamicAdjustmentStatistics"
-    "dThreadingFunctionsInfo"
-    "dThreadingImplementationID"
-    "dWorldStepMemoryFunctionsInfo"
-    "dWorldStepReserveInfo"
+    dontUnpack = true;
 
-    # cooperative.h
-    "dResourceContainerID"
-    "dResourceRequirementsID"
-    "dCooperativeID"
-    
-    # memory
-    "dsizeint"
-    "dAllocFunction"
-    "dReallocFunction"
-    "dFreeFunction"
-    "dStopwatch"
+    buildInputs = [ python3Minimal ];
 
-    # trimesh
-    "dTriMeshDataID"
-    "dTriRayCallback"
-    "dTriArrayCallback"
-    "dTriCallback"
-    "dTriTriMergeCallback"
-    "dMatrix4"
-
-    # ode collision_util
-    "dInfiniteAABB"
-    "dxGeom"
-  ];
-  files = [
-    # "odeconfig.h"
-    # "compatibility.h"
-    "common.h"
-    # "odeinit.h"
-    # "contact.h"
-    # "error.h"
-    # "memory.h"
-    # "odemath.h"
-    # "matrix.h"
-    # "matrix_coop.h"
-    # "timer.h"
-    # "rotation.h"
-    # "mass.h"
-    # "misc.h"
-    # "objects.h"
-    # "collision_space.h"
-    # "collision.h"
-    # "threading.h"
-    # "threading_impl.h"
-    # "cooperative.h"
-    # "export-dif.h"
-    # "version.h.in"
-  ];
+    installPhase = ''
+      mkdir -p $out/bin
+      cp $src $out/bin/create_header
+      ${coreutils-full}/bin/chmod +x $out/bin/create_header
+    '';
+  };
 
   extraHeaderContents = builtins.toFile "nimHeader" ''
     #ifdef C2NIM
@@ -100,10 +34,6 @@ let
     #  endif
     #endif
   '';
-
-  toCommand = file: "cat $src/include/ode/${file} >> $out/ode.h";
-
-  commands = builtins.concatStringsSep "\n" (map toCommand files);
 in
 stdenvNoCC.mkDerivation {
   name = "massive-ODE-headerfile";
@@ -115,12 +45,14 @@ stdenvNoCC.mkDerivation {
   dontUnpack = true;
   dontBuild = true;
 
-  installPhase =
-    ''
-      mkdir -p $out
-      cat ${extraHeaderContents} >> $out/ode.h
-    ''
-    + commands;
+  buildInputs = [create_header];
+
+  installPhase = ''
+    mkdir -p $out
+    cat ${extraHeaderContents} >> $out/ode.h
+    create_header "$src/include/ode" "./ode.h"
+    cat ode.h >> $out/ode.h
+  '';
 
   postFixup = ''
     # remove patterns that break c2nim for some reason
