@@ -16,8 +16,9 @@ when defined(_MSC_VER) or (defined(__GNUC__) and defined(_WIN32)):
   when defined(ODE_DLL):
     discard
   else:
-    const
-      __declspec* = (dllexport)
+    discard
+when not defined(ODE_API):
+  discard
 when defined(_MSC_VER):
   discard
 elif defined(__GNUC__) and
