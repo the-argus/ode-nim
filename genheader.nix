@@ -4,8 +4,8 @@
   ...
 }: let
   files = [
-    "collision.h"
     "common.h"
+    "collision.h"
     "cooperative.h"
     "matrix.h"
     "objects.h"
