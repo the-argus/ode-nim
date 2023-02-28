@@ -73,6 +73,7 @@ stdenvNoCC.mkDerivation {
 
     # these both could cause bad glitches, but uh.  they work
     sed -i "s/#define ODE_NORETURN __attribute__((noreturn))//g" $out/ode.h
+    # TODO: replace the stuff generated with these types with "culonglong" in nim
     sed -i "s/typedef unsigned long long duint64;/typedef unsigned long  duint64;/g" $out/ode.h
 
     # this one also
