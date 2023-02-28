@@ -40,6 +40,7 @@ stdenvNoCC.mkDerivation {
   '';
 
   postFixup = ''
+    sed -i "s/ODE_NORETURN//g" $out/ode.h
     # remove patterns that break c2nim for some reason
     sed -i "s/#define ODE_PURE_INLINE static __inline//g" $out/ode.h
     sed -i "s/#define ODE_INLINE __inline//g" $out/ode.h
