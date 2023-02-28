@@ -29,6 +29,7 @@
     devShell = genSystems (system:
       pkgs.${system}.mkShell {
         packages = with pkgs.${system}; [
+          nim
           nimPackages.c2nim
           ode
         ];
