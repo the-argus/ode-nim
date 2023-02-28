@@ -41,14 +41,14 @@ when defined(__aarch64__) or defined(__alpha__) or defined(__ppc64__) or
     defined(__mips__) or defined(__powerpc64__) or defined(__riscv) or
     defined(__loongarch64) or (defined(__sparc__) and defined(__arch64__)):
   type
-    dint64* = int64_t
-    duint64* = uint64_t
-    dint32* = int32_t
-    duint32* = uint32_t
-    dint16* = int16_t
-    duint16* = uint16_t
-    dint8* = int8_t
-    duint8* = uint8_t
+    dint64* = int64
+    duint64* = uint64
+    dint32* = int32
+    duint32* = uint32
+    dint16* = int16
+    duint16* = uint16
+    dint8* = int8
+    duint8* = uint8
     dintptr* = intptr_t
     duintptr* = uintptr_t
     ddiffint* = ptrdiff_t
@@ -179,16 +179,16 @@ else:
     nextafter(x, y)
 
 when defined(_MSC_VER) and _MSC_VER < 1700:
-  proc _ode_fmin*(x: cdouble; y: cdouble): cdouble {.inline, cdecl.} =
+  proc _ode_fmin*(x: cdouble; y: cdouble): cdouble {.inline, cdecl, importc: "_ode_fmin".} =
     return __min(x, y)
 
-  proc _ode_fmax*(x: cdouble; y: cdouble): cdouble {.inline, cdecl.} =
+  proc _ode_fmax*(x: cdouble; y: cdouble): cdouble {.inline, cdecl, importc: "_ode_fmax".} =
     return __max(x, y)
 
-  proc _ode_fminf*(x: cfloat; y: cfloat): cfloat {.inline, cdecl.} =
+  proc _ode_fminf*(x: cfloat; y: cfloat): cfloat {.inline, cdecl, importc: "_ode_fminf".} =
     return __min(x, y)
 
-  proc _ode_fmaxf*(x: cfloat; y: cfloat): cfloat {.inline, cdecl.} =
+  proc _ode_fmaxf*(x: cfloat; y: cfloat): cfloat {.inline, cdecl, importc: "_ode_fmaxf".} =
     return __max(x, y)
 
 else:

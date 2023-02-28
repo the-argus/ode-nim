@@ -16,7 +16,7 @@ stdenvNoCC.mkDerivation {
     cp $src/ode.h .
     ${coreutils-full}/bin/chmod +w ode.h
 
-    c2nim ode.h
+    c2nim ode.h --skipinclude --stdints --importc
   '';
 
   installPhase = ''
