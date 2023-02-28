@@ -3,29 +3,88 @@
 , ...
 }:
 let
+  types = [
+    "dReal"
+    "dColliderFn"
+    "dGeomID"
+    "dGeomClass"
+
+    "dVector3"
+    "dMatrix3"
+    "dHeightfieldDataID"
+    "dSpaceID"
+    "dVector4"
+    "dNearCallback"
+    "dContactGeom"
+    "dQuaternion"
+    
+    # error stuff
+    "dMessage"
+    "dError"
+    "dDebug"
+    "dMessageFunction"
+
+    "dBodyID"
+    "dJointID"
+    "dJointFeedback"
+    "dJointType"
+    "dJointGroupID"
+    "dContact"
+    "dMass"
+    "dWorldID"
+    "dWorldQuickStepIterationCount_DynamicAdjustmentStatistics"
+    "dThreadingFunctionsInfo"
+    "dThreadingImplementationID"
+    "dWorldStepMemoryFunctionsInfo"
+    "dWorldStepReserveInfo"
+
+    # cooperative.h
+    "dResourceContainerID"
+    "dResourceRequirementsID"
+    "dCooperativeID"
+    
+    # memory
+    "dsizeint"
+    "dAllocFunction"
+    "dReallocFunction"
+    "dFreeFunction"
+    "dStopwatch"
+
+    # trimesh
+    "dTriMeshDataID"
+    "dTriRayCallback"
+    "dTriArrayCallback"
+    "dTriCallback"
+    "dTriTriMergeCallback"
+    "dMatrix4"
+
+    # ode collision_util
+    "dInfiniteAABB"
+    "dxGeom"
+  ];
   files = [
-    "odeconfig.h"
-    "compatibility.h"
+    # "odeconfig.h"
+    # "compatibility.h"
     "common.h"
-    "odeinit.h"
-    "contact.h"
-    "error.h"
-    "memory.h"
-    "odemath.h"
-    "matrix.h"
-    "matrix_coop.h"
-    "timer.h"
-    "rotation.h"
-    "mass.h"
-    "misc.h"
-    "objects.h"
-    "collision_space.h"
-    "collision.h"
-    "threading.h"
-    "threading_impl.h"
-    "cooperative.h"
-    "export-dif.h"
-    "version.h.in"
+    # "odeinit.h"
+    # "contact.h"
+    # "error.h"
+    # "memory.h"
+    # "odemath.h"
+    # "matrix.h"
+    # "matrix_coop.h"
+    # "timer.h"
+    # "rotation.h"
+    # "mass.h"
+    # "misc.h"
+    # "objects.h"
+    # "collision_space.h"
+    # "collision.h"
+    # "threading.h"
+    # "threading_impl.h"
+    # "cooperative.h"
+    # "export-dif.h"
+    # "version.h.in"
   ];
 
   extraHeaderContents = builtins.toFile "nimHeader" ''
