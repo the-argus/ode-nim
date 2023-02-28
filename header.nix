@@ -20,20 +20,6 @@ let
       ${coreutils-full}/bin/chmod +x $out/bin/create_header
     '';
   };
-
-  extraHeaderContents = builtins.toFile "nimHeader" ''
-    #ifdef C2NIM
-    #  dynlib odedll
-    #  cdecl
-    #  if defined(windows)
-    #    define odedll "ode.dll"
-    #  elif defined(macosx)
-    #    define odedll "libode.dylib"
-    #  else
-    #    define odedll "libode.so"
-    #  endif
-    #endif
-  '';
 in
 stdenvNoCC.mkDerivation {
   name = "massive-ODE-headerfile";
@@ -49,7 +35,6 @@ stdenvNoCC.mkDerivation {
 
   installPhase = ''
     mkdir -p $out
-    cat ${extraHeaderContents} >> $out/ode.h
     create_header "$src/include/ode" "./ode.h"
     cat ode.h >> $out/ode.h
   '';
