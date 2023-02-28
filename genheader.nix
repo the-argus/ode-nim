@@ -81,5 +81,12 @@ stdenvNoCC.mkDerivation {
     # lose these, its only used when using c++ anyways
     sed -i "s/_dNaNUnion(): m_ui(0x7FC00000) {}//g" $out/ode.h
     sed -i "s/ODE_EXTERN_C float _nextafterf(float x, float y);/float _nextafterf(float x, float y);/g" $out/ode.h
+
+    # remove stuff for defines with ODE_API
+    sed -i "s/#define ODE_API __declspec(dllexport)//g" $out/ode.h
+    sed -i "s/#define ODE_API//g" $out/ode.h
+
+    # remove ODE_API
+    sed -i "s/^ODE_API //g" $out/ode.h
   '';
 }

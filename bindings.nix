@@ -22,6 +22,6 @@ stdenvNoCC.mkDerivation {
   installPhase = ''
     mkdir -p $out
     # exclude comments in the output
-    grep -vE "##.*?" ode.nim > $out/ode.nim
+    grep -vE "^##.*?" ode.nim > $out/ode.nim
   '';
 }
