@@ -47,8 +47,7 @@
         packages = with pkgs.${system}; [
           nim
           nimPackages.c2nim
-          ode
-          musl
+          # musl
           (self.packages.${system}.ode)
         ];
       });
