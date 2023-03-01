@@ -38,7 +38,8 @@
       };
       ode-src = pkgs.${system}.callPackage ./nix/src.nix {};
 
-      ode = pkgs.${system}.callPackage ./nix/ode.nix { inherit (muslPkgs.${system}) gcc;};
+      ode = pkgs.${system}.callPackage ./nix/ode.nix {static = false;};
+      ode-static = pkgs.${system}.callPackage ./nix/ode.nix {static = true;};
     });
 
     devShell = genSystems (system:
