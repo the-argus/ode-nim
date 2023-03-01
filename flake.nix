@@ -19,12 +19,14 @@
         import nixpkgs {inherit system;});
   in {
     packages = genSystems (system: {
-      default = self.packages.${system}.ode;
+      default = self.packages.${system}.bindings;
       header = pkgs.${system}.callPackage ./nix/header.nix {};
-      ode = pkgs.${system}.callPackage ./nix/bindings.nix {
+      bindings = pkgs.${system}.callPackage ./nix/bindings.nix {
         inherit (self.packages.${system}) header;
       };
       ode-src = pkgs.${system}.callPackage ./nix/src.nix {};
+
+      ode = pkgs.${system}.callPackage ./nix/ode.nix {};
     });
 
     devShell = genSystems (system:
