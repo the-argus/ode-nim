@@ -11,12 +11,24 @@
       "x86_64-linux"
       "aarch64-linux"
     ];
+    systemToMusl = {
+      "x86_64-linux" = "x86_64-unknown-linux-musl";
+      "aarch64-linux" = "aarch64-unknown-linux-musl";
+    };
 
     genSystems = nixpkgs.lib.genAttrs supportedSystems;
 
     pkgs =
       genSystems (system:
         import nixpkgs {inherit system;});
+    muslPkgs = genSystems (system:
+      import nixpkgs {
+        localSystem = {
+          inherit system;
+          libc = "musl";
+          config = systemToMusl.${system};
+        };
+      });
   in {
     packages = genSystems (system: {
       default = self.packages.${system}.bindings;
@@ -26,7 +38,7 @@
       };
       ode-src = pkgs.${system}.callPackage ./nix/src.nix {};
 
-      ode = pkgs.${system}.callPackage ./nix/ode.nix {};
+      ode = pkgs.${system}.callPackage ./nix/ode.nix { inherit (muslPkgs.${system}) gcc;};
     });
 
     devShell = genSystems (system:
