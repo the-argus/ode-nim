@@ -26,6 +26,6 @@ stdenvNoCC.mkDerivation {
   '';
 
   postFixup = ''
-    sed -i -E "s|^discard \"forward decl of (.*?)\"|type\n  \1 = object\n    dummy: int|g" $out/ode.nim
+    sed -i -E "s|^discard \"forward decl of (.*?)\"|type\n  \1\* = object\n    dummy: int|g" $out/ode.nim
   '';
 }
