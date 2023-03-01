@@ -2,4 +2,10 @@ import ode
 
 let world = ode.dWorldCreate()
 
-ode.dWorldSetGravity(world, 0, -9, 0);
+world.dWorldSetGravity(0, -9, 0)
+
+let body = world.dBodyCreate()
+
+# cleanup
+ode.dBodyDestroy(body)
+ode.dWorldDestroy(world)
