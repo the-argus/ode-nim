@@ -24,6 +24,7 @@
       ode = pkgs.${system}.callPackage ./bindings.nix {
         inherit (self.packages.${system}) header;
       };
+      ode-src = pkgs.${system}.callPackage ./src.nix {};
     });
 
     devShell = genSystems (system:
