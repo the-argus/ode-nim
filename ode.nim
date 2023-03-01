@@ -29,10 +29,10 @@ type
   dMatrix3* = array[9, dReal]
 
 type
-  dxResourceRequirements = object
+  dxResourceRequirements* = object
     dummy: int
 type
-  dxResourceContainer = object
+  dxResourceContainer* = object
     dummy: int
 type
   dResourceRequirementsID* = ptr dxResourceRequirements
@@ -44,26 +44,26 @@ type
   dQuaternion* = array[4, dReal]
 
 type
-  dMass = object
+  dMass* = object
     dummy: int
 
 type
-  dxWorld = object
+  dxWorld* = object
     dummy: int
 type
-  dxSpace = object
+  dxSpace* = object
     dummy: int
 type
-  dxBody = object
+  dxBody* = object
     dummy: int
 type
-  dxGeom = object
+  dxGeom* = object
     dummy: int
 type
-  dxJoint = object
+  dxJoint* = object
     dummy: int
 type
-  dxJointGroup = object
+  dxJointGroup* = object
     dummy: int
 type
   dWorldID* = ptr dxWorld
@@ -86,13 +86,13 @@ type
 
 
 type
-  dxMutexGroup = object
+  dxMutexGroup* = object
     dummy: int
 type
   dMutexGroupID* = ptr dxMutexGroup
 
 type
-  dxThreadingImplementation = object
+  dxThreadingImplementation* = object
     dummy: int
 
 
@@ -101,13 +101,13 @@ type
   dcallindex_t* = dsizeint
 
 type
-  dxCallWait = object
+  dxCallWait* = object
     dummy: int
 type
   dCallWaitID* = ptr dxCallWait
 
 type
-  dxCallReleasee = object
+  dxCallReleasee* = object
     dummy: int
 
 
@@ -197,7 +197,7 @@ type
 
 
 type
-  dxHeightfieldData = object
+  dxHeightfieldData* = object
     dummy: int
 type
   dHeightfieldDataID* = ptr dxHeightfieldData
@@ -218,13 +218,13 @@ type
   dThreadReadyToServeCallback* = proc (callback_context: pointer)
 
 type
-  dxThreadingThreadPool = object
+  dxThreadingThreadPool* = object
     dummy: int
 type
   dThreadingThreadPoolID* = ptr dxThreadingThreadPool
 
 type
-  dxCooperative = object
+  dxCooperative* = object
     dummy: int
 type
   dCooperativeID* = ptr dxCooperative
