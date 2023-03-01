@@ -36,6 +36,7 @@
           nim
           nimPackages.c2nim
           ode
+          musl
         ];
       });
   };
