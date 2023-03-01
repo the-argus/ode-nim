@@ -1,13 +1,17 @@
-#include <bits/types.h>
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdio.h>
 
-#ifdef __USE_TIME_BITS64
-typedef __time64_t time_t;
-#else
-typedef __time_t time_t;
-#endif
+// original solution for times type
+// #include <bits/types.h>
+// #ifdef __USE_TIME_BITS64
+// typedef __time64_t time_t;
+// #else
+// typedef __time_t time_t;
+// #endif
+
+// hardcoded solution
+typedef long int time_t;
 
 // BASIC NUMBER TYPES
 typedef int dint32;

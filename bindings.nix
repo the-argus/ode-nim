@@ -24,4 +24,8 @@ stdenvNoCC.mkDerivation {
     # exclude comments in the output
     grep -vE "^##.*?" ode.nim > $out/ode.nim
   '';
+
+  postFixup = ''
+    sed -iE "s/^discard \"forward decl of (.*?)\"/type\n\t\1 = object\n\t\t_dummy: int/g"
+  '';
 }
