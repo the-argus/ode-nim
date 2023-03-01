@@ -19,7 +19,8 @@ type
   duintptr* = duint64
   ddiffint* = dint64
   dsizeint* = duint64
-  dMessageFunction* = proc (errnum: cint; msg: cstring; ap: va_list): void
+  VAList* {.importc: "va_list", header: "<stdarg.h>".} = object
+  dMessageFunction* = proc (errnum: cint; msg: cstring; ap: VAList): void
   dAllocFunction* = proc (size: dsizeint): pointer
   dReallocFunction* = proc (`ptr`: pointer; oldsize: dsizeint; newsize: dsizeint): pointer
   dFreeFunction* = proc (`ptr`: pointer; size: dsizeint): void
@@ -94,6 +95,7 @@ type
 type
   dxThreadingImplementation* = object
     dummy: int
+  dThreadingImplementationID* = ptr dxThreadingImplementation
 
 
 type
@@ -109,8 +111,7 @@ type
 type
   dxCallReleasee* = object
     dummy: int
-
-
+  dCallReleaseeID* = ptr dxCallReleasee
 
 
 
@@ -125,6 +126,64 @@ type
 
 
 type
+  dmutexindex_t = uint
+  ddependencychange_t = ddiffint
+
+  dThreadedWaitTime* = object
+    wait_sec: time_t
+    wait_nsec: culong
+
+
+type
+
+  dMutexGroupAllocFunction* = proc (
+    impl: dThreadingImplementationID,
+    Mutex_count: dmutexindex_t,
+    Mutex_names_ptr: char): dMutexGroupID
+  dMutexGroupFreeFunction* = proc (
+    impl: dThreadingImplementationID,
+    mutex_group: dMutexGroupID): void
+  dMutexGroupMutexLockFunction* = proc (
+    impl: dThreadingImplementationID,
+    mutex_group: dMutexGroupID,
+    mutex_index: dmutexindex_t): void
+  dMutexGroupMutexUnlockFunction* = proc (
+    impl: dThreadingImplementationID,
+    mutex_group: dMutexGroupID,
+    mutex_index: dmutexindex_t): void
+  dThreadedCallWaitAllocFunction* = proc (
+    impl: dThreadingImplementationID): dCallWaitID
+  dThreadedCallWaitResetFunction* = proc (
+    impl: dThreadingImplementationID,
+    call_wait: dCallWaitID): void
+  dThreadedCallWaitFreeFunction* = proc (
+    impl: dThreadingImplementationID,
+    call_wait: dCallWaitID): void
+  dThreadedCallFunction = proc (
+    call_context: pointer,
+    instance_index: dcallindex_t,
+    this_releasee: dCallReleaseeID): int
+  dThreadedCallPostFunction* = proc(
+    impl: dThreadingImplementationID, out_summary_fault: ptr int,
+    out_post_releasee: ptr dCallReleaseeID, dependencies_count: ddependencycount_t,
+    dependent_releasee: dCallReleaseeID, call_wait: dCallWaitID,
+    call_func: ptr dThreadedCallFunction, call_context: pointer,
+    instance_index: dcallindex_t, call_name: ptr char)
+  dThreadedCallDependenciesCountAlterFunction* = proc (
+    impl: dThreadingImplementationID, target_releasee: dCallReleaseeID,
+    dependencies_count_change: ddependencychange_t): void
+  dThreadedCallWaitFunction* = proc (
+    impl: dThreadingImplementationID, out_wait_status: ptr int,
+    call_wait: dCallWaitID,
+    timeout_time_ptr: ptr dThreadedWaitTime,
+    wait_name: ptr char)
+  dThreadingImplThreadCountRetrieveFunction = proc (
+    impl: dThreadingImplementationID ): uint
+
+
+
+
+
   dThreadingImplResourcesForCallsPreallocateFunction* = proc (
       impl: dThreadingImplementationID;
       max_simultaneous_calls_estimate: ddependencycount_t): cint
@@ -1138,11 +1197,11 @@ proc dGeomSphereSetRadius*(sphere: dGeomID; radius: dReal) {.
 proc dGeomSphereGetRadius*(sphere: dGeomID): dReal {.importc: "dGeomSphereGetRadius".}
 proc dGeomSpherePointDepth*(sphere: dGeomID; x: dReal; y: dReal; z: dReal): dReal {.
     importc: "dGeomSpherePointDepth".}
-proc dCreateConvex*(space: dSpaceID; _planes: ptr dReal; _planecount: cuint;
-                   _points: ptr dReal; _pointcount: cuint; _polygons: ptr cuint): dGeomID {.
+proc dCreateConvex*(space: dSpaceID; planes: ptr dReal; planecount: cuint;
+                   points: ptr dReal; pointcount: cuint; polygons: ptr cuint): dGeomID {.
     importc: "dCreateConvex".}
-proc dGeomSetConvex*(g: dGeomID; _planes: ptr dReal; _count: cuint; _points: ptr dReal;
-                    _pointcount: cuint; _polygons: ptr cuint) {.
+proc dGeomSetConvex*(g: dGeomID; planes: ptr dReal; count: cuint; points: ptr dReal;
+                    pointcount: cuint; polygons: ptr cuint) {.
     importc: "dGeomSetConvex".}
 proc dCreateBox*(space: dSpaceID; lx: dReal; ly: dReal; lz: dReal): dGeomID {.
     importc: "dCreateBox".}
@@ -1239,7 +1298,7 @@ proc dGeomHeightfieldGetHeightfieldData*(g: dGeomID): dHeightfieldDataID {.
 proc dClosestLineSegmentPoints*(a1: dVector3; a2: dVector3; b1: dVector3; b2: dVector3;
                                cp1: dVector3; cp2: dVector3) {.
     importc: "dClosestLineSegmentPoints".}
-proc dBoxTouchesBox*(_p1: dVector3; R1: dMatrix3; side1: dVector3; _p2: dVector3;
+proc dBoxTouchesBox*(p1: dVector3; R1: dMatrix3; side1: dVector3; p2: dVector3;
                     R2: dMatrix3; side2: dVector3): cint {.importc: "dBoxTouchesBox".}
 proc dBoxBox*(p1: dVector3; R1: dMatrix3; side1: dVector3; p2: dVector3; R2: dMatrix3;
              side2: dVector3; normal: dVector3; depth: ptr dReal;
