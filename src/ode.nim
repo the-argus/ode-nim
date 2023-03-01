@@ -1,3 +1,12 @@
+when defined(windows):
+  const
+    odedll* = "ode.dll"
+elif defined(macosx):
+  const
+    odedll* = "libode.dylib"
+else:
+  const
+    odedll* = "libode.so"
 
 type
   time_t* = clong

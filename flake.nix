@@ -49,6 +49,7 @@
           nimPackages.c2nim
           ode
           musl
+          (self.packages.${system}.ode)
         ];
       });
   };

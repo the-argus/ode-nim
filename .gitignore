@@ -10,3 +10,9 @@ ode.h
 
 # nix
 result
+
+# test executables
+tests/tinit
+
+# main executable
+src/ode
