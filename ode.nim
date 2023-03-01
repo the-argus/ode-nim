@@ -1,9 +1,7 @@
-when defined(__USE_TIME_BITS64):
-  type
-    time_t* = __time64_t
-else:
-  type
-    time_t* = __time_t
+
+type
+  time_t* = clong
+
 
 type
   dint32* = cint
@@ -30,8 +28,12 @@ type
   dVector4* = array[4, dReal]
   dMatrix3* = array[9, dReal]
 
-discard "forward decl of dxResourceRequirements"
-discard "forward decl of dxResourceContainer"
+type
+  dxResourceRequirements = object
+    dummy: int
+type
+  dxResourceContainer = object
+    dummy: int
 type
   dResourceRequirementsID* = ptr dxResourceRequirements
   dResourceContainerID* = ptr dxResourceContainer
@@ -41,14 +43,28 @@ type
 
   dQuaternion* = array[4, dReal]
 
-discard "forward decl of dMass"
+type
+  dMass = object
+    dummy: int
 
-discard "forward decl of dxWorld"
-discard "forward decl of dxSpace"
-discard "forward decl of dxBody"
-discard "forward decl of dxGeom"
-discard "forward decl of dxJoint"
-discard "forward decl of dxJointGroup"
+type
+  dxWorld = object
+    dummy: int
+type
+  dxSpace = object
+    dummy: int
+type
+  dxBody = object
+    dummy: int
+type
+  dxGeom = object
+    dummy: int
+type
+  dxJoint = object
+    dummy: int
+type
+  dxJointGroup = object
+    dummy: int
 type
   dWorldID* = ptr dxWorld
   dSpaceID* = ptr dxSpace
@@ -69,22 +85,30 @@ type
     free_block*: proc (block_pointer: pointer; block_current_size: dsizeint)
 
 
-discard "forward decl of dxMutexGroup"
+type
+  dxMutexGroup = object
+    dummy: int
 type
   dMutexGroupID* = ptr dxMutexGroup
 
-discard "forward decl of dxThreadingImplementation"
+type
+  dxThreadingImplementation = object
+    dummy: int
 
 
 type
   ddependencycount_t* = dsizeint
   dcallindex_t* = dsizeint
 
-discard "forward decl of dxCallWait"
+type
+  dxCallWait = object
+    dummy: int
 type
   dCallWaitID* = ptr dxCallWait
 
-discard "forward decl of dxCallReleasee"
+type
+  dxCallReleasee = object
+    dummy: int
 
 
 
@@ -172,7 +196,9 @@ type
   dNearCallback* = proc (data: pointer; o1: dGeomID; o2: dGeomID): void
 
 
-discard "forward decl of dxHeightfieldData"
+type
+  dxHeightfieldData = object
+    dummy: int
 type
   dHeightfieldDataID* = ptr dxHeightfieldData
   dHeightfieldGetHeight* = proc (p_user_data: pointer; x: cint; z: cint): dReal
@@ -191,11 +217,15 @@ type
 
   dThreadReadyToServeCallback* = proc (callback_context: pointer)
 
-discard "forward decl of dxThreadingThreadPool"
+type
+  dxThreadingThreadPool = object
+    dummy: int
 type
   dThreadingThreadPoolID* = ptr dxThreadingThreadPool
 
-discard "forward decl of dxCooperative"
+type
+  dxCooperative = object
+    dummy: int
 type
   dCooperativeID* = ptr dxCooperative
 
