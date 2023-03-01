@@ -1,5 +1,5 @@
 { stdenvNoCC
-, fetchgit
+, callPackage
 , coreutils-full
 , python3Minimal
 , ...
@@ -23,15 +23,11 @@ let
 in
 stdenvNoCC.mkDerivation {
   name = "massive-ODE-headerfile";
-  src = fetchgit {
-    url = "https://bitbucket.org/odedevs/ode.git";
-    rev = "60ed40ff46ab228368cd8ce766d5c4a4cd6e33bd";
-    sha256 = "0xsypfa6zxs2ddv76672aj6zza79hiyz21mlf08plbij0z859a1i";
-  };
+  src = callPackages ./src.nix { };
   dontUnpack = true;
   dontBuild = true;
 
-  buildInputs = [create_header];
+  buildInputs = [ create_header ];
 
   installPhase = ''
     mkdir -p $out
