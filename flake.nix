@@ -45,7 +45,6 @@
     devShell = genSystems (system:
       pkgs.${system}.mkShell {
         packages = with pkgs.${system}; [
-          python3Minimal
           nim
           nimPackages.c2nim
           ode
