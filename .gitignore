@@ -16,3 +16,9 @@ tests/tinit
 
 # main executable
 src/ode
+
+# libraries
+*.a
+*.so
+*.dll
+*.lib
