@@ -20,5 +20,6 @@ src/ode
 # libraries
 *.a
 *.so
+*.so.8
 *.dll
 *.lib
