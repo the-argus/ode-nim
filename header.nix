@@ -35,7 +35,6 @@ stdenvNoCC.mkDerivation {
 
   installPhase = ''
     mkdir -p $out
-    cat $src/include/ode/odeconfig.h >> $out/ode.h
     cat ${./types.h} >> $out/ode.h
     create_header "$src/include/ode" "./ode.h"
     cat ode.h >> $out/ode.h
