@@ -20,11 +20,11 @@
   in {
     packages = genSystems (system: {
       default = self.packages.${system}.ode;
-      header = pkgs.${system}.callPackage ./header.nix {};
-      ode = pkgs.${system}.callPackage ./bindings.nix {
+      header = pkgs.${system}.callPackage ./nix/header.nix {};
+      ode = pkgs.${system}.callPackage ./nix/bindings.nix {
         inherit (self.packages.${system}) header;
       };
-      ode-src = pkgs.${system}.callPackage ./src.nix {};
+      ode-src = pkgs.${system}.callPackage ./nix/src.nix {};
     });
 
     devShell = genSystems (system:
