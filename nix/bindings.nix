@@ -18,7 +18,7 @@
     "_p2"
   ];
   kw = word: builtins.replaceStrings ["_"] [""] word;
-  toReplaceCommand = ukeyword: ''sed -i "s/${ukeyword}/${kw ukeyword}/g" $out/ode.nim'';
+  toReplaceCommand = ukeyword: ''sed -i -E "s/([^a-zA-Z])${ukeyword}/\1${kw ukeyword}/g" $out/ode.nim'';
   replaceCommands =
     builtins.concatStringsSep
     "\n"

@@ -133,9 +133,9 @@ type
     reset_call_wait*: ptr dThreadedCallWaitResetFunction
     free_call_wait*: ptr dThreadedCallWaitFreeFunction
     post_call*: ptr dThreadedCallPostFunction
-    alter_call_dependenciescount*: ptr dThreadedCallDependenciesCountAlterFunction
+    alter_call_dependencies_count*: ptr dThreadedCallDependenciesCountAlterFunction
     wait_call*: ptr dThreadedCallWaitFunction
-    retrieve_threadcount*: ptr dThreadingImplThreadCountRetrieveFunction
+    retrieve_thread_count*: ptr dThreadingImplThreadCountRetrieveFunction
     preallocate_resources_for_calls*: ptr dThreadingImplResourcesForCallsPreallocateFunction
   dmutexindex_t = uint
   ddependencychange_t = ddiffint
@@ -188,7 +188,7 @@ type
 
   dWorldQuickStepIterationCount_DynamicAdjustmentStatistics* {.bycopy.} = object
     struct_size*: cuint
-    iterationcount*: duint32
+    iteration_count*: duint32
     premature_exits*: duint32
     prolonged_execs*: duint32
     full_extra_execs*: duint32
@@ -510,7 +510,7 @@ proc dWorldSetAutoDisableAngularThreshold*(a1: dWorldID;
 proc dWorldGetAutoDisableAverageSamplesCount*(a1: dWorldID): cint {.
     importc: "dWorldGetAutoDisableAverageSamplesCount".}
 proc dWorldSetAutoDisableAverageSamplesCount*(a1: dWorldID;
-    average_samplescount: cuint) {.importc: "dWorldSetAutoDisableAverageSamplesCount".}
+    average_samples_count: cuint) {.importc: "dWorldSetAutoDisableAverageSamplesCount".}
 proc dWorldGetAutoDisableSteps*(a1: dWorldID): cint {.
     importc: "dWorldGetAutoDisableSteps".}
 proc dWorldSetAutoDisableSteps*(a1: dWorldID; steps: cint) {.
@@ -556,7 +556,7 @@ proc dBodySetAutoDisableAngularThreshold*(a1: dBodyID;
 proc dBodyGetAutoDisableAverageSamplesCount*(a1: dBodyID): cint {.
     importc: "dBodyGetAutoDisableAverageSamplesCount".}
 proc dBodySetAutoDisableAverageSamplesCount*(a1: dBodyID;
-    average_samplescount: cuint) {.importc: "dBodySetAutoDisableAverageSamplesCount".}
+    average_samples_count: cuint) {.importc: "dBodySetAutoDisableAverageSamplesCount".}
 proc dBodyGetAutoDisableSteps*(a1: dBodyID): cint {.
     importc: "dBodyGetAutoDisableSteps".}
 proc dBodySetAutoDisableSteps*(a1: dBodyID; steps: cint) {.
@@ -1292,7 +1292,7 @@ proc dExternalThreadingServeMultiThreadedImplementation*(
     impl: dThreadingImplementationID; readiness_callback: ptr dThreadReadyToServeCallback; ## =NULL
     callback_context: pointer) {.importc: "dExternalThreadingServeMultiThreadedImplementation".}
   ## =NULL
-proc dThreadingAllocateThreadPool*(threadcount: cuint; stack_size: dsizeint;
+proc dThreadingAllocateThreadPool*(thread_count: cuint; stack_size: dsizeint;
                                   ode_data_allocate_flags: cuint; reserved: pointer): dThreadingThreadPoolID {.
     importc: "dThreadingAllocateThreadPool".}
   ## =NULL
