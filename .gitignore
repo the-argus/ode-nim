@@ -13,6 +13,7 @@ result
 
 # test executables
 tests/tinit
+tests/tstep
 
 # main executable
 src/ode
