@@ -26,36 +26,37 @@
 typedef long int time_t;
 
 // OPAQUE TYPES
-struct dxWorld;
-typedef struct dxWorld *dWorldID;
-struct dxSpace;
-typedef struct dxSpace *dSpaceID;
-struct dxBody;
-typedef struct dxBody *dBodyID;
-struct dxGeom;
-typedef struct dxGeom *dGeomID;
-struct dxJoint;
-typedef struct dxJoint *dJointID;
-struct dxJointGroup;
-typedef struct dxJointGroup *dJointGroupID;
-struct dxResourceRequirements;
-typedef struct dxResourceRequirements *dResourceRequirementsID;
-struct dxResourceContainer;
-typedef struct dxResourceContainer *dResourceContainerID;
-struct dxCallWait;
-typedef struct dxCallWait *dCallWaitID;
-struct dxCallReleasee;
-typedef struct dxCallReleasee *dCallReleaseeID;
-struct dxMutexGroup;
-typedef struct dxMutexGroup *dMutexGroupID;
-struct dxThreadingImplementation;
-typedef struct dxThreadingImplementation *dThreadingImplementationID;
-struct dxHeightfieldData;
-typedef struct dxHeightfieldData *dHeightfieldDataID;
-struct dxThreadingThreadPool;
-typedef struct dxThreadingThreadPool *dThreadingThreadPoolID;
-struct dxCooperative;
-typedef struct dxCooperative *dCooperativeID;
+struct dWorldID;
+typedef struct dWorldID dWorldID;
+struct dSpaceID;
+typedef struct dSpaceID dSpaceID;
+struct dBodyID;
+typedef struct dBodyID dBodyID;
+struct dGeomID;
+typedef struct dGeomID dGeomID;
+struct dJointID;
+typedef struct dJointID dJointID;
+struct dJointGroupID;
+typedef struct dJointGroupID dJointGroupID;
+struct dResourceRequirementsID;
+typedef struct dResourceRequirementsID dResourceRequirementsID;
+struct dResourceContainerID;
+typedef struct dResourceContainerID dResourceContainerID;
+struct dCallWaitID;
+typedef struct dCallWaitID dCallWaitID;
+struct dCallReleaseeID;
+typedef struct dCallReleaseeID dCallReleaseeID;
+struct dMutexGroupID;
+typedef struct dMutexGroupID dMutexGroupID;
+struct dThreadingImplementationID;
+typedef struct dThreadingImplementationID dThreadingImplementationID;
+struct dHeightfieldDataID;
+typedef struct dHeightfieldDataID dHeightfieldDataID;
+struct dThreadingThreadPoolID;
+typedef struct dThreadingThreadPoolID dThreadingThreadPoolID;
+struct dCooperativeID;
+typedef struct dCooperativeID dCooperativeID;
+
 
 // BASIC NUMBER TYPES
 typedef int dint32;

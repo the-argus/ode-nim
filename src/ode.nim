@@ -14,65 +14,35 @@ type
   time_t* = clong
 
 
-type dxWorld {.header: "ode/ode.h".} = object
-type
-  dWorldID* = ptr dxWorld
+type dWorldID {.header: "ode/ode.h".} = object
 
-type dxSpace {.header: "ode/ode.h".} = object
-type
-  dSpaceID* = ptr dxSpace
+type dSpaceID {.header: "ode/ode.h".} = object
 
-type dxBody {.header: "ode/ode.h".} = object
-type
-  dBodyID* = ptr dxBody
+type dBodyID {.header: "ode/ode.h".} = object
 
-type dxGeom {.header: "ode/ode.h".} = object
-type
-  dGeomID* = ptr dxGeom
+type dGeomID {.header: "ode/ode.h".} = object
 
-type dxJoint {.header: "ode/ode.h".} = object
-type
-  dJointID* = ptr dxJoint
+type dJointID {.header: "ode/ode.h".} = object
 
-type dxJointGroup {.header: "ode/ode.h".} = object
-type
-  dJointGroupID* = ptr dxJointGroup
+type dJointGroupID {.header: "ode/ode.h".} = object
 
-type dxResourceRequirements {.header: "ode/ode.h".} = object
-type
-  dResourceRequirementsID* = ptr dxResourceRequirements
+type dResourceRequirementsID {.header: "ode/ode.h".} = object
 
-type dxResourceContainer {.header: "ode/ode.h".} = object
-type
-  dResourceContainerID* = ptr dxResourceContainer
+type dResourceContainerID {.header: "ode/ode.h".} = object
 
-type dxCallWait {.header: "ode/ode.h".} = object
-type
-  dCallWaitID* = ptr dxCallWait
+type dCallWaitID {.header: "ode/ode.h".} = object
 
-type dxCallReleasee {.header: "ode/ode.h".} = object
-type
-  dCallReleaseeID* = ptr dxCallReleasee
+type dCallReleaseeID {.header: "ode/ode.h".} = object
 
-type dxMutexGroup {.header: "ode/ode.h".} = object
-type
-  dMutexGroupID* = ptr dxMutexGroup
+type dMutexGroupID {.header: "ode/ode.h".} = object
 
-type dxThreadingImplementation {.header: "ode/ode.h".} = object
-type
-  dThreadingImplementationID* = ptr dxThreadingImplementation
+type dThreadingImplementationID {.header: "ode/ode.h".} = object
 
-type dxHeightfieldData {.header: "ode/ode.h".} = object
-type
-  dHeightfieldDataID* = ptr dxHeightfieldData
+type dHeightfieldDataID {.header: "ode/ode.h".} = object
 
-type dxThreadingThreadPool {.header: "ode/ode.h".} = object
-type
-  dThreadingThreadPoolID* = ptr dxThreadingThreadPool
+type dThreadingThreadPoolID {.header: "ode/ode.h".} = object
 
-type dxCooperative {.header: "ode/ode.h".} = object
-type
-  dCooperativeID* = ptr dxCooperative
+type dCooperativeID {.header: "ode/ode.h".} = object
 
 
 type
