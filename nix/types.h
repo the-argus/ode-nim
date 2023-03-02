@@ -2,6 +2,18 @@
 #include <stddef.h>
 #include <stdio.h>
 
+#ifdef C2NIM
+#  dynlib odedll
+#  cdecl
+#  if defined(windows)
+#    define odedll "ode.dll"
+#  elif defined(macosx)
+#    define odedll "libode.dylib"
+#  else
+#    define odedll "libode.so"
+#  endif
+#endif
+
 // original solution for times type
 // #include <bits/types.h>
 // #ifdef __USE_TIME_BITS64

@@ -1,3 +1,5 @@
+  ddependencycount_t* = dsizeint
+  dcallindex_t* = dsizeint
   dmutexindex_t = uint
   ddependencychange_t = ddiffint
   dThreadedWaitTime* = object
