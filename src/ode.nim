@@ -1,15 +1,67 @@
-when defined(windows):
-  const
-    odedll* = "ode.dll"
-elif defined(macosx):
-  const
-    odedll* = "libode.dylib"
-else:
-  const
-    odedll* = "libode.so"
 
 type
   time_t* = clong
+
+
+type dxWorld {.header: "ode/ode.h".} = object
+type
+  dWorldID* = ptr dxWorld
+
+type dxSpace {.header: "ode/ode.h".} = object
+type
+  dSpaceID* = ptr dxSpace
+
+type dxBody {.header: "ode/ode.h".} = object
+type
+  dBodyID* = ptr dxBody
+
+type dxGeom {.header: "ode/ode.h".} = object
+type
+  dGeomID* = ptr dxGeom
+
+type dxJoint {.header: "ode/ode.h".} = object
+type
+  dJointID* = ptr dxJoint
+
+type dxJointGroup {.header: "ode/ode.h".} = object
+type
+  dJointGroupID* = ptr dxJointGroup
+
+type dxResourceRequirements {.header: "ode/ode.h".} = object
+type
+  dResourceRequirementsID* = ptr dxResourceRequirements
+
+type dxResourceContainer {.header: "ode/ode.h".} = object
+type
+  dResourceContainerID* = ptr dxResourceContainer
+
+type dxCallWait {.header: "ode/ode.h".} = object
+type
+  dCallWaitID* = ptr dxCallWait
+
+type dxCallReleasee {.header: "ode/ode.h".} = object
+type
+  dCallReleaseeID* = ptr dxCallReleasee
+
+type dxMutexGroup {.header: "ode/ode.h".} = object
+type
+  dMutexGroupID* = ptr dxMutexGroup
+
+type dxThreadingImplementation {.header: "ode/ode.h".} = object
+type
+  dThreadingImplementationID* = ptr dxThreadingImplementation
+
+type dxHeightfieldData {.header: "ode/ode.h".} = object
+type
+  dHeightfieldDataID* = ptr dxHeightfieldData
+
+type dxThreadingThreadPool {.header: "ode/ode.h".} = object
+type
+  dThreadingThreadPoolID* = ptr dxThreadingThreadPool
+
+type dxCooperative {.header: "ode/ode.h".} = object
+type
+  dCooperativeID* = ptr dxCooperative
 
 
 type
@@ -28,123 +80,68 @@ type
   duintptr* = duint64
   ddiffint* = dint64
   dsizeint* = duint64
-  VAList* {.importc: "va_list", header: "<stdarg.h>".} = object
-  dMessageFunction* = proc (errnum: cint; msg: cstring; ap: VAList): void
-  dAllocFunction* = proc (size: dsizeint): pointer
+  dMessageFunction* = proc (errnum: cint; msg: cstring; ap: va_list): void
+  va_list* {.importc: "va_list", header: "<stdarg.h>".} = object  dAllocFunction* = proc (size: dsizeint): pointer
   dReallocFunction* = proc (`ptr`: pointer; oldsize: dsizeint; newsize: dsizeint): pointer
   dFreeFunction* = proc (`ptr`: pointer; size: dsizeint): void
   dReal* = cdouble
   dVector3* = array[3, dReal]
   dVector4* = array[4, dReal]
   dMatrix3* = array[9, dReal]
-
-type
-  dxResourceRequirements* = object
-    dummy: int
-type
-  dxResourceContainer* = object
-    dummy: int
-type
-  dResourceRequirementsID* = ptr dxResourceRequirements
-  dResourceContainerID* = ptr dxResourceContainer
   dStopwatch* {.bycopy.} = object
     time*: cdouble
     cc*: array[2, culong]
 
   dQuaternion* = array[4, dReal]
+  dMass* {.bycopy.} = object
+    mass*: dReal
+    c*: dVector3
+    I*: dMatrix3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 type
-  dMass* = object
-    dummy: int
-
-type
-  dxWorld* = object
-    dummy: int
-type
-  dxSpace* = object
-    dummy: int
-type
-  dxBody* = object
-    dummy: int
-type
-  dxGeom* = object
-    dummy: int
-type
-  dxJoint* = object
-    dummy: int
-type
-  dxJointGroup* = object
-    dummy: int
-type
-  dWorldID* = ptr dxWorld
-  dSpaceID* = ptr dxSpace
-  dBodyID* = ptr dxBody
-  dGeomID* = ptr dxGeom
-  dJointID* = ptr dxJoint
-  dJointGroupID* = ptr dxJointGroup
-  dWorldStepReserveInfo* {.bycopy.} = object
+  dThreadingImplResourcesForCallsPreallocateFunction* = proc (
+      impl: dThreadingImplementationID;
+      max_simultaneous_calls_estimate: ddependencycount_t): cint
+  dThreadingFunctionsInfo* {.bycopy.} = object
     struct_size*: cuint
-    reserve_factor*: cfloat
-    reserve_minimum*: cuint
-
-  dWorldStepMemoryFunctionsInfo* {.bycopy.} = object
-    struct_size*: cuint
-    alloc_block*: proc (block_size: dsizeint): pointer
-    shrink_block*: proc (block_pointer: pointer; block_current_size: dsizeint;
-                       block_smaller_size: dsizeint): pointer
-    free_block*: proc (block_pointer: pointer; block_current_size: dsizeint)
-
-
-type
-  dxMutexGroup* = object
-    dummy: int
-type
-  dMutexGroupID* = ptr dxMutexGroup
-
-type
-  dxThreadingImplementation* = object
-    dummy: int
-  dThreadingImplementationID* = ptr dxThreadingImplementation
-
-
-type
-  ddependencycount_t* = dsizeint
-  dcallindex_t* = dsizeint
-
-type
-  dxCallWait* = object
-    dummy: int
-type
-  dCallWaitID* = ptr dxCallWait
-
-type
-  dxCallReleasee* = object
-    dummy: int
-  dCallReleaseeID* = ptr dxCallReleasee
-
-
-
-
-
-
-
-
-
-
-
-
-
-type
+    alloc_mutex_group*: ptr dMutexGroupAllocFunction
+    free_mutex_group*: ptr dMutexGroupFreeFunction
+    lock_group_mutex*: ptr dMutexGroupMutexLockFunction
+    unlock_group_mutex*: ptr dMutexGroupMutexUnlockFunction
+    alloc_call_wait*: ptr dThreadedCallWaitAllocFunction
+    reset_call_wait*: ptr dThreadedCallWaitResetFunction
+    free_call_wait*: ptr dThreadedCallWaitFreeFunction
+    post_call*: ptr dThreadedCallPostFunction
+    alter_call_dependenciescount*: ptr dThreadedCallDependenciesCountAlterFunction
+    wait_call*: ptr dThreadedCallWaitFunction
+    retrieve_threadcount*: ptr dThreadingImplThreadCountRetrieveFunction
+    preallocate_resources_for_calls*: ptr dThreadingImplResourcesForCallsPreallocateFunction
   dmutexindex_t = uint
   ddependencychange_t = ddiffint
-
   dThreadedWaitTime* = object
     wait_sec: time_t
     wait_nsec: culong
-
-
-type
-
   dMutexGroupAllocFunction* = proc (
     impl: dThreadingImplementationID,
     Mutex_count: dmutexindex_t,
@@ -189,31 +186,9 @@ type
   dThreadingImplThreadCountRetrieveFunction = proc (
     impl: dThreadingImplementationID ): uint
 
-
-
-
-
-  dThreadingImplResourcesForCallsPreallocateFunction* = proc (
-      impl: dThreadingImplementationID;
-      max_simultaneous_calls_estimate: ddependencycount_t): cint
-  dThreadingFunctionsInfo* {.bycopy.} = object
-    struct_size*: cuint
-    alloc_mutex_group*: ptr dMutexGroupAllocFunction
-    free_mutex_group*: ptr dMutexGroupFreeFunction
-    lock_group_mutex*: ptr dMutexGroupMutexLockFunction
-    unlock_group_mutex*: ptr dMutexGroupMutexUnlockFunction
-    alloc_call_wait*: ptr dThreadedCallWaitAllocFunction
-    reset_call_wait*: ptr dThreadedCallWaitResetFunction
-    free_call_wait*: ptr dThreadedCallWaitFreeFunction
-    post_call*: ptr dThreadedCallPostFunction
-    alter_call_dependencies_count*: ptr dThreadedCallDependenciesCountAlterFunction
-    wait_call*: ptr dThreadedCallWaitFunction
-    retrieve_thread_count*: ptr dThreadingImplThreadCountRetrieveFunction
-    preallocate_resources_for_calls*: ptr dThreadingImplResourcesForCallsPreallocateFunction
-
   dWorldQuickStepIterationCount_DynamicAdjustmentStatistics* {.bycopy.} = object
     struct_size*: cuint
-    iteration_count*: duint32
+    iterationcount*: duint32
     premature_exits*: duint32
     prolonged_execs*: duint32
     full_extra_execs*: duint32
@@ -262,13 +237,6 @@ type
     t2*: dVector3
 
   dNearCallback* = proc (data: pointer; o1: dGeomID; o2: dGeomID): void
-
-
-type
-  dxHeightfieldData* = object
-    dummy: int
-type
-  dHeightfieldDataID* = ptr dxHeightfieldData
   dHeightfieldGetHeight* = proc (p_user_data: pointer; x: cint; z: cint): dReal
   dGetAABBFn* = proc (a1: dGeomID; aabb: array[6, dReal]): void
   dColliderFn* = proc (o1: dGeomID; o2: dGeomID; flags: cint; contact: ptr dContactGeom;
@@ -285,17 +253,6 @@ type
 
   dThreadReadyToServeCallback* = proc (callback_context: pointer)
 
-type
-  dxThreadingThreadPool* = object
-    dummy: int
-type
-  dThreadingThreadPoolID* = ptr dxThreadingThreadPool
-
-type
-  dxCooperative* = object
-    dummy: int
-type
-  dCooperativeID* = ptr dxCooperative
 
 proc dGetConfiguration*(): cstring {.importc: "dGetConfiguration".}
 proc dCheckConfiguration*(token: cstring): cint {.importc: "dCheckConfiguration".}
@@ -553,7 +510,7 @@ proc dWorldSetAutoDisableAngularThreshold*(a1: dWorldID;
 proc dWorldGetAutoDisableAverageSamplesCount*(a1: dWorldID): cint {.
     importc: "dWorldGetAutoDisableAverageSamplesCount".}
 proc dWorldSetAutoDisableAverageSamplesCount*(a1: dWorldID;
-    average_samples_count: cuint) {.importc: "dWorldSetAutoDisableAverageSamplesCount".}
+    average_samplescount: cuint) {.importc: "dWorldSetAutoDisableAverageSamplesCount".}
 proc dWorldGetAutoDisableSteps*(a1: dWorldID): cint {.
     importc: "dWorldGetAutoDisableSteps".}
 proc dWorldSetAutoDisableSteps*(a1: dWorldID; steps: cint) {.
@@ -599,7 +556,7 @@ proc dBodySetAutoDisableAngularThreshold*(a1: dBodyID;
 proc dBodyGetAutoDisableAverageSamplesCount*(a1: dBodyID): cint {.
     importc: "dBodyGetAutoDisableAverageSamplesCount".}
 proc dBodySetAutoDisableAverageSamplesCount*(a1: dBodyID;
-    average_samples_count: cuint) {.importc: "dBodySetAutoDisableAverageSamplesCount".}
+    average_samplescount: cuint) {.importc: "dBodySetAutoDisableAverageSamplesCount".}
 proc dBodyGetAutoDisableSteps*(a1: dBodyID): cint {.
     importc: "dBodyGetAutoDisableSteps".}
 proc dBodySetAutoDisableSteps*(a1: dBodyID; steps: cint) {.
@@ -1335,7 +1292,7 @@ proc dExternalThreadingServeMultiThreadedImplementation*(
     impl: dThreadingImplementationID; readiness_callback: ptr dThreadReadyToServeCallback; ## =NULL
     callback_context: pointer) {.importc: "dExternalThreadingServeMultiThreadedImplementation".}
   ## =NULL
-proc dThreadingAllocateThreadPool*(thread_count: cuint; stack_size: dsizeint;
+proc dThreadingAllocateThreadPool*(threadcount: cuint; stack_size: dsizeint;
                                   ode_data_allocate_flags: cuint; reserved: pointer): dThreadingThreadPoolID {.
     importc: "dThreadingAllocateThreadPool".}
   ## =NULL
