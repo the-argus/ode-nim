@@ -72,7 +72,7 @@ in
     postFixup = ''
       # replace forward declarations with this:
       # type [typename] {.header: "ode/ode.h".} = object
-      sed -i -E "s|^discard \"forward decl of (.*?)\"|type \1\* {.header: \"ode/ode.h\".} = object|g" $out/ode.nim
+      sed -i -E "s|^discard \"forward decl of (.*?)\"|type \1 {.header: \"ode/ode.h\".} = object|g" $out/ode.nim
 
       # replace all of the variables that start with _
       ${replaceCommands}
