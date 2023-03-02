@@ -81,7 +81,8 @@ type
   ddiffint* = dint64
   dsizeint* = duint64
   dMessageFunction* = proc (errnum: cint; msg: cstring; ap: va_list): void
-  va_list* {.importc: "va_list", header: "<stdarg.h>".} = object  dAllocFunction* = proc (size: dsizeint): pointer
+  va_list* {.importc: "va_list", header: "<stdarg.h>".} = object
+  dAllocFunction* = proc (size: dsizeint): pointer
   dReallocFunction* = proc (`ptr`: pointer; oldsize: dsizeint; newsize: dsizeint): pointer
   dFreeFunction* = proc (`ptr`: pointer; size: dsizeint): void
   dReal* = cdouble

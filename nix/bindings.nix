@@ -33,7 +33,7 @@
       # note: this relies on the line that contains va_list being in a "type" block
       contents =
         builtins.toFile "va_list.nim"
-        "  va_list* {.importc: \"va_list\", header: \"<stdarg.h>\".} = object";
+        "  va_list* {.importc: \"va_list\", header: \"<stdarg.h>\".} = object\n";
     }
     {
       targetBefore = "dThreadingImplResourcesForCallsPreallocateFunction$";
