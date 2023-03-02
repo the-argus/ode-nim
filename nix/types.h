@@ -13,6 +13,38 @@
 // hardcoded solution
 typedef long int time_t;
 
+// OPAQUE TYPES
+struct dxWorld;
+typedef struct dxWorld *dWorldID;
+struct dxSpace;
+typedef struct dxSpace *dSpaceID;
+struct dxBody;
+typedef struct dxBody *dBodyID;
+struct dxGeom;
+typedef struct dxGeom *dGeomID;
+struct dxJoint;
+typedef struct dxJoint *dJointID;
+struct dxJointGroup;
+typedef struct dxJointGroup *dJointGroupID;
+struct dxResourceRequirements;
+typedef struct dxResourceRequirements *dResourceRequirementsID;
+struct dxResourceContainer;
+typedef struct dxResourceContainer *dResourceContainerID;
+struct dxCallWait;
+typedef struct dxCallWait *dCallWaitID;
+struct dxCallReleasee;
+typedef struct dxCallReleasee *dCallReleaseeID;
+struct dxMutexGroup;
+typedef struct dxMutexGroup *dMutexGroupID;
+struct dxThreadingImplementation;
+typedef struct dxThreadingImplementation *dThreadingImplementationID;
+struct dxHeightfieldData;
+typedef struct dxHeightfieldData *dHeightfieldDataID;
+struct dxThreadingThreadPool;
+typedef struct dxThreadingThreadPool *dThreadingThreadPoolID;
+struct dxCooperative;
+typedef struct dxCooperative *dCooperativeID;
+
 // BASIC NUMBER TYPES
 typedef int dint32;
 typedef unsigned int duint32;
@@ -38,29 +70,18 @@ typedef double dReal;
 typedef dReal dVector3[3];
 typedef dReal dVector4[4];
 typedef dReal dMatrix3[9];
-struct dxResourceRequirements;
-struct dxResourceContainer;
-typedef struct dxResourceRequirements *dResourceRequirementsID;
-typedef struct dxResourceContainer *dResourceContainerID;
+
 typedef struct dStopwatch {
   double time;
   unsigned long cc[2];
 } dStopwatch;
 typedef dReal dQuaternion[4];
-struct dMass;
+struct dMass {
+  dReal mass;
+  dVector3 c;
+  dMatrix3 I;
+};
 typedef struct dMass dMass;
-struct dxWorld;
-struct dxSpace;
-struct dxBody;
-struct dxGeom;
-struct dxJoint;
-struct dxJointGroup;
-typedef struct dxWorld *dWorldID;
-typedef struct dxSpace *dSpaceID;
-typedef struct dxBody *dBodyID;
-typedef struct dxGeom *dGeomID;
-typedef struct dxJoint *dJointID;
-typedef struct dxJointGroup *dJointGroupID;
 typedef struct {
   unsigned struct_size;
   float reserve_factor;
@@ -77,17 +98,9 @@ typedef struct {
 
 } dWorldStepMemoryFunctionsInfo;
 
-struct dxMutexGroup;
-typedef struct dxMutexGroup *dMutexGroupID;
-struct dxThreadingImplementation;
-typedef struct dxThreadingImplementation *dThreadingImplementationID;
 typedef unsigned dmutexindex_t;
 typedef dsizeint ddependencycount_t;
 typedef dsizeint dcallindex_t;
-struct dxCallWait;
-typedef struct dxCallWait *dCallWaitID;
-struct dxCallReleasee;
-typedef struct dxCallReleasee *dCallReleaseeID;
 typedef ddiffint ddependencychange_t;
 
 typedef int dThreadedCallFunction(void *call_context,
@@ -227,9 +240,6 @@ typedef struct dJointFeedback {
 
 typedef void dNearCallback(void *data, dGeomID o1, dGeomID o2);
 
-struct dxHeightfieldData;
-typedef struct dxHeightfieldData *dHeightfieldDataID;
-
 typedef dReal dHeightfieldGetHeight(void *p_user_data, int x, int z);
 
 typedef void dGetAABBFn(dGeomID, dReal aabb[6]);
@@ -247,9 +257,3 @@ typedef struct dGeomClass {
 } dGeomClass;
 
 typedef void(dThreadReadyToServeCallback)(void *callback_context);
-
-struct dxThreadingThreadPool;
-typedef struct dxThreadingThreadPool *dThreadingThreadPoolID;
-
-struct dxCooperative;
-typedef struct dxCooperative *dCooperativeID;
