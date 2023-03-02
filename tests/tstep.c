@@ -23,12 +23,12 @@ int main () {
     const dReal* bodyPos; 
     bodyPos = dBodyGetPosition(body);
 
-    printf("x: %f\ty: %f\tz: %f", bodyPos[0], bodyPos[1], bodyPos[2]);
+    printf("x: %f\ty: %f\tz: %f\n", bodyPos[0], bodyPos[1], bodyPos[2]);
 
     dWorldStep(world, stepSize);
     
     bodyPos = dBodyGetPosition(body);
-    printf("x: %f\ty: %f\tz: %f", bodyPos[0], bodyPos[1], bodyPos[2]);
+    printf("x: %f\ty: %f\tz: %f\n", bodyPos[0], bodyPos[1], bodyPos[2]);
 
     // cleanup
     dBodyDestroy(body);
